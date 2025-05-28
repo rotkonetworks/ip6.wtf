@@ -5,10 +5,15 @@ import UnoCSS from 'unocss/vite'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), UnoCSS()],
-  base: process.env.GITHUB_PAGES ? '/ip6wtf/' : '/',
-  root: 'src',
+  base: '/',
   build: {
-    outDir: '../dist',
-    emptyOutDir: true,
-  }
+    outDir: 'dist',
+    rollupOptions: {
+      input: './index.html',
+    },
+  },
+  server: {
+    port: 3000,
+    open: true,
+  },
 })
