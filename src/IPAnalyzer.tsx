@@ -1012,7 +1012,7 @@ const IPAnalyzer = () => {
             rel="noopener noreferrer"
             className="text-green-600 hover:text-green-400 transition-colors"
           >
-            <span className="hidden sm:inline">♥💕 rotko.net 😘</span>
+            <span className="hidden sm:inline">💕 rotko.net 😘</span>
             <span className="sm:hidden">rotko.net</span>
           </a>
           <span className="hidden sm:inline">⚡</span>

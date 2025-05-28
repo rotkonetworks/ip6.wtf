@@ -14,6 +14,7 @@ export default defineConfig({
   ],
   theme: {
     colors: {
+      'terminal-green': '#10b981',
     }
   },
   presets: [
@@ -23,6 +24,7 @@ export default defineConfig({
     presetTypography(),
     presetWebFonts({
       fonts: {
+        'mono': ['Courier New', 'Courier', 'monospace'],
       },
     }),
   ],
