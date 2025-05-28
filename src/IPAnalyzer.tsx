@@ -645,12 +645,6 @@ const IPAnalyzer = () => {
   };
 
   useEffect(() => {
-    if (!input) {
-      setAnalysis(null);
-      setShowSuggestions(false);
-      return;
-    }
-    
     const trimmed = input.trim().toLowerCase();
     
     // Filter suggestions based on category
@@ -659,23 +653,33 @@ const IPAnalyzer = () => {
       filtered = suggestions.filter(s => s.cat === selectedCategory);
     }
     
-    // Further filter by input
-    filtered = filtered.filter(s => 
-      s.ip.toLowerCase().includes(trimmed) ||
-      s.desc.toLowerCase().includes(trimmed)
-    );
+    // Further filter by input if there is any
+    if (trimmed.length > 0) {
+      filtered = filtered.filter(s => 
+        s.ip.toLowerCase().includes(trimmed) ||
+        s.desc.toLowerCase().includes(trimmed)
+      );
+    }
     
     setFilteredSuggestions(filtered);
-    setShowSuggestions(filtered.length > 0 && trimmed.length > 0);
+    
+    // Show suggestions when input is focused or when category changes
+    if (trimmed.length > 0 || selectedCategory !== 'all') {
+      setShowSuggestions(true);
+    }
     
     // Analyze the input
-    const upperTrimmed = input.trim();
-    if (ipv4Regex.test(upperTrimmed)) {
-      setAnalysis(analyzeIPv4(upperTrimmed));
-      setIsExpanded(true);
-    } else if (ipv6Regex.test(upperTrimmed) || upperTrimmed.includes('::')) {
-      setAnalysis(analyzeIPv6(upperTrimmed));
-      setIsExpanded(true);
+    if (input) {
+      const upperTrimmed = input.trim();
+      if (ipv4Regex.test(upperTrimmed)) {
+        setAnalysis(analyzeIPv4(upperTrimmed));
+        setIsExpanded(true);
+      } else if (ipv6Regex.test(upperTrimmed) || upperTrimmed.includes('::')) {
+        setAnalysis(analyzeIPv6(upperTrimmed));
+        setIsExpanded(true);
+      } else {
+        setAnalysis(null);
+      }
     } else {
       setAnalysis(null);
     }
@@ -745,7 +749,20 @@ const IPAnalyzer = () => {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onFocus={() => setShowSuggestions(true)}
+                  onFocus={() => {
+                    if (selectedCategory !== 'all' || input.trim().length > 0) {
+                      setShowSuggestions(true);
+                    }
+                  }}
+                  onClick={() => {
+                    if (selectedCategory !== 'all' || input.trim().length > 0) {
+                      setShowSuggestions(true);
+                    }
+                  }}
+                  onBlur={() => {
+                    // Delay hiding to allow clicks on suggestions
+                    setTimeout(() => setShowSuggestions(false), 200);
+                  }}
                   placeholder="Enter IP address..."
                   className="flex-1 bg-transparent px-4 py-3 text-green-400 placeholder-green-700 focus:outline-none"
                   autoComplete="off"
