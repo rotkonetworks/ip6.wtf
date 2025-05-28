@@ -1,0 +1,11 @@
+# robots.txt for ip6.wtf
+# https://ip6.wtf/robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://ip6.wtf/sitemap.xml
+
+# Be nice to servers
+Crawl-delay: 1

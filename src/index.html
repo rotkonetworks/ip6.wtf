@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>IPv6 Address Analyzer - IPv6 Tools | ip6.wtf</title>
+    <meta name="title" content="IP Address Analyzer - IPv4 & IPv6 Tools with RFC References | ip6.wtf" />
+    <meta name="description" content="Free online IP address analyzer for IPv4 and IPv6. Get comprehensive RFC references, identify address types, perform binary/hex conversions, and explore IPv4 to IPv6 translation methods." />
+    <meta name="keywords" content="IP address analyzer, IPv4, IPv6, RFC standards, network protocols, IP lookup, address converter, binary conversion, hexadecimal, network tools, IP address types, CIDR calculator" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="author" content="rotko.net" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ip6.wtf/" />
+    <meta property="og:title" content="IP Address Analyzer - IPv4 & IPv6 Tools with RFC References" />
+    <meta property="og:description" content="Free online IP address analyzer for IPv4 and IPv6. Get comprehensive RFC references, identify address types, and perform network address conversions." />
+    <meta property="og:image" content="https://ip6.wtf/og-image.png" />
+    <meta property="og:site_name" content="ip6.wtf" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://ip6.wtf/" />
+    <meta property="twitter:title" content="IP Address Analyzer - IPv4 & IPv6 Tools" />
+    <meta property="twitter:description" content="Free online IP address analyzer for IPv4 and IPv6 with RFC references and conversion tools." />
+    <meta property="twitter:image" content="https://ip6.wtf/twitter-image.png" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://ip6.wtf/" />
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#1a1a1a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    
+    <!-- Structured Data / JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "ip6.wtf - IP Address Analyzer",
+      "url": "https://ip6.wtf",
+      "description": "Free online IP address analyzer for IPv4 and IPv6 with comprehensive RFC references, address type identification, and conversion tools",
+      "applicationCategory": "NetworkingApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "rotko.net",
+        "url": "https://rotko.net"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://ip6.wtf/{search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      },
+      "featureList": [
+        "IPv4 address analysis",
+        "IPv6 address analysis",
+        "RFC references lookup",
+        "Network address type identification",
+        "Binary to decimal conversion",
+        "Hexadecimal conversion",
+        "IPv4 to IPv6 translation",
+        "CIDR notation support"
+      ],
+      "screenshot": "https://ip6.wtf/screenshot.png"
+    }
+    </script>
+    
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://ip6.wtf"
+      }]
+    }
+    </script>
+    
+    <!-- Comprehensive FAQ Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "What is an IP address analyzer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An IP address analyzer is a tool that examines IPv4 and IPv6 addresses to provide detailed information about their structure, type, and associated RFC standards. It can identify whether an address is public or private, perform conversions, and provide network-related calculations."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is IPv6 multicast?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "IPv6 multicast addresses begin with FF00::/8 and are used to send packets to multiple destinations simultaneously. Common multicast addresses include FF02::1 (all nodes), FF02::2 (all routers), and FF02::1:FF00:0/104 (solicited-node). The second octet defines flags and scope, such as FF02 for link-local scope or FF05 for site-local scope."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is 127.0.0.1?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "127.0.0.1 is the standard IPv4 loopback address, also known as localhost. It's used to establish an IP connection to the same machine or computer being used by the end-user. The entire 127.0.0.0/8 block is reserved for loopback purposes as defined in RFC 1122."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is ::1 in IPv6?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "::1 is the IPv6 loopback address, equivalent to 127.0.0.1 in IPv4. It's a special address that always refers to the local computer. The double colon (::) notation represents consecutive groups of zeros, so ::1 is shorthand for 0000:0000:0000:0000:0000:0000:0000:0001."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What are private IP addresses?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Private IP addresses are reserved for internal network use and aren't routable on the internet. IPv4 private ranges include 10.0.0.0/8 (Class A), 172.16.0.0/12 (Class B), and 192.168.0.0/16 (Class C) as defined in RFC 1918. For IPv6, fc00::/7 is reserved for Unique Local Addresses (ULA)."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is 192.168.1.1?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "192.168.1.1 is a common private IPv4 address typically used as the default gateway for home routers. It belongs to the 192.168.0.0/16 private address range and is often used to access router administration interfaces. Other common router addresses include 192.168.0.1 and 10.0.0.1."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is an APIPA address?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "APIPA (Automatic Private IP Addressing) uses the 169.254.0.0/16 range when a device can't obtain an IP address from a DHCP server. Also called link-local addresses, they allow local network communication without a DHCP server. IPv6 link-local addresses use the fe80::/10 prefix."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is 0.0.0.0?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "0.0.0.0 is a non-routable meta-address used to designate an invalid, unknown, or non-applicable target. In routing tables, it represents the default route. When a server binds to 0.0.0.0, it listens on all available network interfaces. It's also used as the source address for DHCP requests."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is 255.255.255.255?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "255.255.255.255 is the IPv4 limited broadcast address used to send data to all devices on the local network segment. Unlike directed broadcasts, packets sent to this address aren't forwarded by routers. It's commonly used in DHCP discovery and other local network protocols."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What are IPv6 link-local addresses?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "IPv6 link-local addresses use the fe80::/10 prefix and are automatically configured on all IPv6-enabled interfaces. They're only valid for communication within the same network segment and aren't routable. Every IPv6 interface must have a link-local address, typically derived from the MAC address using EUI-64."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is a subnet mask?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A subnet mask determines which portion of an IP address is the network address and which is the host address. Common masks include 255.255.255.0 (/24), 255.255.0.0 (/16), and 255.0.0.0 (/8). CIDR notation like /24 indicates the number of bits used for the network portion."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is CIDR notation?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CIDR (Classless Inter-Domain Routing) notation represents IP addresses and their routing prefix length. For example, 192.168.1.0/24 indicates a network with 24 bits for the network portion and 8 bits for hosts, allowing 254 usable addresses. IPv6 commonly uses /64 for subnets."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What are IPv6 unique local addresses (ULA)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "IPv6 Unique Local Addresses (fc00::/7) are the IPv6 equivalent of private addresses. They're divided into two blocks: fc00::/8 (centrally assigned, not yet implemented) and fd00::/8 (locally assigned). ULAs are routable within an organization but not on the global internet."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is the difference between unicast, broadcast, and multicast?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Unicast sends data to a single specific recipient. Broadcast sends to all devices on a network segment (IPv4 only). Multicast sends to multiple specific recipients who have joined a multicast group. IPv6 eliminated broadcast in favor of more efficient multicast addressing."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is an anycast address?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Anycast allows multiple servers to share the same IP address, with routers directing traffic to the nearest or best-performing server. It's commonly used for DNS root servers and CDNs. In IPv6, anycast addresses are syntactically indistinguishable from unicast addresses."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is 10.0.0.0/8?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "10.0.0.0/8 is the largest private IPv4 address block, providing over 16 million addresses (10.0.0.0 to 10.255.255.255). It's commonly used in large corporate networks and cloud environments. Being a Class A private network, it offers maximum flexibility for subnetting."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is 172.16.0.0/12?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "172.16.0.0/12 is a private IPv4 address range spanning from 172.16.0.0 to 172.31.255.255, providing over 1 million addresses. It offers 16 Class B networks and is often used in medium to large corporate networks requiring more addresses than 192.168.0.0/16."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What are IPv6 global unicast addresses?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "IPv6 global unicast addresses (2000::/3) are publicly routable addresses equivalent to public IPv4 addresses. They're assigned by regional internet registries and typically start with 2 or 3. These addresses enable direct internet communication without NAT."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is the IPv4 address exhaustion problem?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "IPv4 address exhaustion occurred because IPv4's 32-bit addressing only provides about 4.3 billion addresses. With internet growth, available addresses were depleted by 2011. This led to IPv6 adoption, which uses 128-bit addressing providing 340 undecillion addresses."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is NAT (Network Address Translation)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "NAT translates private IP addresses to public ones, allowing multiple devices to share a single public IP. While conserving IPv4 addresses, NAT complicates peer-to-peer connections. IPv6's vast address space eliminates the need for NAT in most scenarios."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is ::ffff:0:0/96?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "::ffff:0:0/96 is the IPv6 prefix for IPv4-mapped IPv6 addresses. These addresses allow IPv6 applications to communicate with IPv4 hosts. For example, ::ffff:192.0.2.1 represents the IPv4 address 192.0.2.1 in IPv6 format."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What are reserved IP addresses?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Reserved IP addresses serve special purposes: 0.0.0.0/8 (current network), 127.0.0.0/8 (loopback), 169.254.0.0/16 (link-local), 224.0.0.0/4 (multicast), 240.0.0.0/4 (reserved for future use). IPv6 reserves ::/128 (unspecified), ::1/128 (loopback), and various multicast ranges."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is 8.8.8.8?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "8.8.8.8 is Google's primary public DNS server address, with 8.8.4.4 as secondary. These anycast addresses provide free DNS resolution services globally. For IPv6, Google DNS uses 2001:4860:4860::8888 and 2001:4860:4860::8844."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is a MAC address?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A MAC (Media Access Control) address is a unique 48-bit hardware identifier assigned to network interfaces. Unlike IP addresses which operate at Layer 3, MAC addresses work at Layer 2. IPv6 can derive link-local addresses from MAC addresses using EUI-64 format."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is IPv6 address compression?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "IPv6 address compression removes leading zeros and uses :: to represent consecutive zero groups. For example, 2001:0db8:0000:0000:0000:0000:0000:0001 compresses to 2001:db8::1. The :: can only be used once per address to avoid ambiguity."
+        }
+      }]
+    }
+    </script>
+    
+    <!-- Preconnect to improve performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    
+    <!-- Additional tags for better indexing -->
+    <meta name="geo.region" content="US" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="rating" content="general" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    
+    <!-- Performance hints -->
+    <link rel="dns-prefetch" href="https://ip6.wtf" />
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- Accessibility skip link -->
+    <a href="#main-content" class="sr-only">Skip to main content</a>
+    
+    <!-- NoScript fallback -->
+    <noscript>
+      <div style="padding: 20px; text-align: center;">
+        <h1>IP Address Analyzer - IPv4 & IPv6 Tools</h1>
+        <p>This application requires JavaScript to function properly. Please enable JavaScript in your browser to use the IP address analyzer.</p>
+        <p>Features include: IPv4/IPv6 address analysis, RFC references, address type identification, and conversion tools.</p>
+      </div>
+    </noscript>
+    
+    <script type="module" src="./frontend.tsx"></script>
+  </body>
+</html>

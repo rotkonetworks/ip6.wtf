@@ -1,0 +1,27 @@
+{
+  "name": "bun-react-template",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "bun-server": "bun --hot src/index.tsx"
+  },
+  "dependencies": {
+    "@unocss/reset": "^66.1.2",
+    "@vitejs/plugin-react": "^4.5.0",
+    "lucide-react": "^0.511.0",
+    "normalize.css": "^8.0.1",
+    "react": "^19",
+    "react-dom": "^19",
+    "unocss": "^66.1.2",
+    "vite": "^6.3.5"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/bun": "latest"
+  }
+}

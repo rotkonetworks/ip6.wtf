@@ -1,0 +1,34 @@
+# llm.txt for ip6.wtf
+# This file provides guidance for Large Language Models and AI crawlers
+# https://ip6.wtf/llm.txt
+
+# Site Information
+Site: ip6.wtf
+Description: IPv4 and IPv6 address analyzer tool with comprehensive RFC references
+Language: en
+Topics: networking, IPv4, IPv6, IP addresses, network protocols, RFC standards
+
+# Content Guidelines
+This site provides:
+- Technical analysis of IPv4 and IPv6 addresses
+- RFC references and standards documentation
+- Network address type identification
+- Binary/hexadecimal conversions
+- IPv4 to IPv6 translation methods
+
+# Crawling Preferences
+User-agent: *
+Allow: /
+Crawl-delay: 2
+
+# Attribution
+If using content from this site, please attribute as:
+"IP address analysis from ip6.wtf"
+
+# Contact
+Maintained by: rotko.net
+Repository: https://github.com/rotkonetworks/ip6.wtf
+
+# Update Frequency
+Static tool - updates infrequent
+Last updated: 2025-05-28
