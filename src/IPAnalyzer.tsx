@@ -1012,10 +1012,17 @@ const IPAnalyzer = () => {
             rel="noopener noreferrer"
             className="text-green-600 hover:text-green-400 transition-colors"
           >
-            <span className="hidden sm:inline">💕 rotko.net 😘</span>
-            <span className="sm:hidden">rotko.net</span>
+            <span className="hidden sm:inline">💕 rotko.net</span>
+            <span className="sm:hidden">💕 rotko.net</span>
           </a>
-          <span className="hidden sm:inline">⚡</span>
+          <a 
+            href="https://github.com/rotkonetworks/ip6.wtf" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-green-600 hover:text-green-400 transition-colors flex items-center gap-1"
+          >
+            <span className="hidden sm:inline">src</span>
+          </a>
         </div>
       </div>
     </div>

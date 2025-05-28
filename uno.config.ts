@@ -24,7 +24,7 @@ export default defineConfig({
     presetTypography(),
     presetWebFonts({
       fonts: {
-        'mono': ['Courier New', 'Courier', 'monospace'],
+        'mono': ['JetBrains Mono'],
       },
     }),
   ],
