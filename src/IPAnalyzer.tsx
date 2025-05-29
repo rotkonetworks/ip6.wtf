@@ -979,7 +979,7 @@ const IPAnalyzer = () => {
               </div>
 
               {/* Actions */}
-              <div className="flex gap-2 justify-center">
+              <div className="flex gap-2 justify-center pb-8">
                 <button
                   onClick={() => {
                     setInput('');
