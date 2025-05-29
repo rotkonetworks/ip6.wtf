@@ -6,7 +6,7 @@ import UnoCSS from 'unocss/vite'
 export default defineConfig({
   plugins: [react(), UnoCSS()],
   base: '/',
-//  root: 'src',
+  root: 'src',
   build: {
     outDir: 'dist',
     rollupOptions: {
