@@ -36,23 +36,7 @@ const IPAnalyzer = () => {
   };
 
   const suggestions = [
-    // IPv4 Special
-    { ip: '0.0.0.0', desc: 'Unspecified', cat: 'ipv4-special' },
-    { ip: '127.0.0.1', desc: 'Loopback', cat: 'ipv4-special' },
-    { ip: '255.255.255.255', desc: 'Broadcast', cat: 'ipv4-special' },
-    
-    // IPv4 Private
-    { ip: '10.0.0.1', desc: 'Class A Private', cat: 'ipv4-private' },
-    { ip: '172.16.0.1', desc: 'Class B Private', cat: 'ipv4-private' },
-    { ip: '192.168.1.1', desc: 'Class C Private', cat: 'ipv4-private' },
-    { ip: '169.254.1.1', desc: 'Link-Local', cat: 'ipv4-private' },
-    
-    // IPv4 Multicast
-    { ip: '224.0.0.1', desc: 'All Hosts', cat: 'ipv4-multicast' },
-    { ip: '224.0.0.2', desc: 'All Routers', cat: 'ipv4-multicast' },
-    { ip: '239.255.255.250', desc: 'UPnP/SSDP', cat: 'ipv4-multicast' },
-    
-    // IPv6 Special
+    // IPv6 Special (prioritized)
     { ip: '::', desc: 'Unspecified', cat: 'ipv6-special' },
     { ip: '::1', desc: 'Loopback', cat: 'ipv6-special' },
     { ip: '::ffff:192.0.2.1', desc: 'IPv4-Mapped', cat: 'ipv6-special' },
@@ -73,21 +57,39 @@ const IPAnalyzer = () => {
     { ip: '2001:db8::', desc: 'Documentation', cat: 'ipv6-documentation' },
     { ip: '2001:db8:dead:beef::', desc: 'Documentation Example', cat: 'ipv6-documentation' },
     
-    // Real World
-    { ip: '9.9.9.9', desc: 'Quad9 DNS', cat: 'real-world' },
-    { ip: '8.8.8.8', desc: 'Google DNS', cat: 'real-world' },
-    { ip: '1.1.1.1', desc: 'Cloudflare DNS', cat: 'real-world' },
+    // Real World (IPv6 first)
     { ip: '2620:fe::fe', desc: 'Quad9 DNS v6', cat: 'real-world' },
     { ip: '2001:4860:4860::8888', desc: 'Google DNS v6', cat: 'real-world' },
     { ip: '2606:4700:4700::1111', desc: 'Cloudflare v6', cat: 'real-world' },
+    
+    // IPv4 Special
+    { ip: '0.0.0.0', desc: 'Unspecified', cat: 'ipv4-special' },
+    { ip: '127.0.0.1', desc: 'Loopback', cat: 'ipv4-special' },
+    { ip: '255.255.255.255', desc: 'Broadcast', cat: 'ipv4-special' },
+    
+    // IPv4 Private
+    { ip: '10.0.0.1', desc: 'Class A Private', cat: 'ipv4-private' },
+    { ip: '172.16.0.1', desc: 'Class B Private', cat: 'ipv4-private' },
+    { ip: '192.168.1.1', desc: 'Class C Private', cat: 'ipv4-private' },
+    { ip: '169.254.1.1', desc: 'Link-Local', cat: 'ipv4-private' },
+    
+    // IPv4 Multicast
+    { ip: '224.0.0.1', desc: 'All Hosts', cat: 'ipv4-multicast' },
+    { ip: '224.0.0.2', desc: 'All Routers', cat: 'ipv4-multicast' },
+    { ip: '239.255.255.250', desc: 'UPnP/SSDP', cat: 'ipv4-multicast' },
+    
+    // Real World IPv4
+    { ip: '9.9.9.9', desc: 'Quad9 DNS', cat: 'real-world' },
+    { ip: '8.8.8.8', desc: 'Google DNS', cat: 'real-world' },
+    { ip: '1.1.1.1', desc: 'Cloudflare DNS', cat: 'real-world' },
   ];
 
-  const rfcLink = (rfcNumber: number, section = '') => {
+  const rfcLink = (rfcNumber, section = '') => {
     const base = `https://www.rfc-editor.org/rfc/rfc${rfcNumber}.html`;
     return section ? `${base}#${section}` : base;
   };
 
-  const analyzeIPv4 = (ip: string) => {
+  const analyzeIPv4 = (ip) => {
     // Check cache first
     const cacheKey = `v4:${ip}`;
     if (cache.has(cacheKey)) {
@@ -663,25 +665,23 @@ const IPAnalyzer = () => {
     
     setFilteredSuggestions(filtered);
     
-    // Show suggestions when input is focused or when category changes
-    if (trimmed.length > 0 || selectedCategory !== 'all') {
-      setShowSuggestions(true);
-    }
-    
     // Analyze the input
     if (input) {
       const upperTrimmed = input.trim();
       if (ipv4Regex.test(upperTrimmed)) {
         setAnalysis(analyzeIPv4(upperTrimmed));
         setIsExpanded(true);
+        setShowSuggestions(false); // Hide suggestions when analyzing
       } else if (ipv6Regex.test(upperTrimmed) || upperTrimmed.includes('::')) {
         setAnalysis(analyzeIPv6(upperTrimmed));
         setIsExpanded(true);
+        setShowSuggestions(false); // Hide suggestions when analyzing
       } else {
         setAnalysis(null);
       }
     } else {
       setAnalysis(null);
+      setIsExpanded(false);
     }
   }, [input, selectedCategory]);
 
@@ -734,7 +734,11 @@ const IPAnalyzer = () => {
               <div className="flex flex-col sm:flex-row items-stretch bg-gray-900 border border-green-600 rounded">
                 <select
                   value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedCategory(e.target.value);
+                    setInput(''); // Clear input when changing category
+                    setShowSuggestions(true); // Show suggestions immediately
+                  }}
                   className="bg-transparent text-green-400 px-3 py-2 border-b sm:border-b-0 sm:border-r border-green-600 focus:outline-none text-sm"
                 >
                   {Object.entries(suggestionCategories).map(([key, label]) => (
@@ -750,12 +754,12 @@ const IPAnalyzer = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onFocus={() => {
-                    if (selectedCategory !== 'all' || input.trim().length > 0) {
+                    if (selectedCategory !== 'all' || input.trim().length > 0 || filteredSuggestions.length > 0) {
                       setShowSuggestions(true);
                     }
                   }}
                   onClick={() => {
-                    if (selectedCategory !== 'all' || input.trim().length > 0) {
+                    if (selectedCategory !== 'all' || input.trim().length > 0 || filteredSuggestions.length > 0) {
                       setShowSuggestions(true);
                     }
                   }}
