@@ -5,7 +5,8 @@ import UnoCSS from 'unocss/vite'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), UnoCSS()],
-  base: '/',
+//  base: '/',
+  base: process.env.GITHUB_PAGES ? '/ip6wtf/' : '/',
   root: 'src',
   build: {
     outDir: 'dist',
