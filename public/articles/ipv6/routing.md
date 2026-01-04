@@ -51,12 +51,63 @@ add dst-address=2001:db8::/32 gateway=2001:db8:2::1 distance=20
 ## OSPFv3 Configuration
 
 ### OSPFv3 vs OSPFv2 Differences
+
+OSPFv3 (RFC 5340) is not just "OSPF for IPv6" - it's a cleaner protocol design. Understanding the differences is key to migration.
+
+**Fundamental Changes:**
 ```
-- Runs directly over IPv6
-- Router ID still 32-bit (usually IPv4 format)
-- Link-local addresses for neighbor adjacencies
-- Multiple instances per interface
-- Authentication via IPsec
+| Aspect              | OSPFv2                      | OSPFv3                        |
+|---------------------|-----------------------------|------------------------------ |
+| Runs over           | IPv4 (protocol 89)          | IPv6 (next-header 89)         |
+| Neighbor discovery  | Primary interface address   | Link-local addresses only     |
+| Network statement   | Required (defines networks) | Not used - enabled per-iface  |
+| Router ID           | 32-bit (from IPv4 addr)     | 32-bit (must configure if no IPv4) |
+| Authentication      | In protocol (MD5/plaintext) | External via IPsec AH         |
+| Address in LSAs     | Embedded in LSA             | Separated (prefix LSAs)       |
+| Multiple instances  | One per interface           | Multiple per interface        |
+| Address families    | IPv4 only                   | IPv4 + IPv6 (RFC 5838)        |
+```
+
+**LSA Type Changes:**
+```
+OSPFv2 LSA          OSPFv3 LSA              Notes
+-----------         ----------              -----
+Type 1 (Router)     Type 1 (Router)         No address info, just topology
+Type 2 (Network)    Type 2 (Network)        No address info
+Type 3 (Summary)    Type 3 (Inter-Area-Prefix)  Prefixes separated
+Type 4 (ASBR)       Type 4 (Inter-Area-Router)  Points to ASBR
+Type 5 (External)   Type 5 (AS-External)    Same function
+-                   Type 8 (Link)           Link-local info, LLA, options
+-                   Type 9 (Intra-Area-Prefix)  Prefix info for area
+```
+
+**Why Link-Local Adjacencies Matter:**
+```
+OSPFv2: Neighbor = interface primary IP → routing depends on addressing
+OSPFv3: Neighbor = link-local (fe80::) → routing independent of global addresses
+
+Benefits:
+- Renumber global addresses without breaking OSPF
+- Adjacencies survive prefix changes
+- Multiple prefixes per interface don't affect OSPF
+- Easier multi-homing within a site
+```
+
+**No Network Statement - Enable Per Interface:**
+```
+OSPFv2 approach:
+  router ospf 1
+    network 10.0.0.0 0.255.255.255 area 0    ← matches interfaces by IP
+
+OSPFv3 approach:
+  interface eth0
+    ipv6 ospf 1 area 0                        ← explicit per-interface
+
+Why this is better:
+- No wildcard mask confusion
+- No accidental interface inclusion
+- Clear per-interface configuration
+- Matches modern network design
 ```
 
 ### MikroTik OSPFv3 Setup
@@ -123,7 +174,188 @@ add area=backbone interface=ether4 network-type=point-to-multipoint
 add topics=ospf,!raw action=memory
 ```
 
+## IS-IS for IPv6
+
+### Why IS-IS Migration is Easier Than OSPF
+
+IS-IS was designed for multi-protocol support from the start (originally for CLNP). Adding IPv6 is just enabling another address family - no protocol version change needed.
+
+**IS-IS vs OSPF for IPv6 Transition:**
+```
+| Aspect                  | OSPF                        | IS-IS                        |
+|-------------------------|-----------------------------|------------------------------ |
+| IPv6 version            | New protocol (OSPFv3)       | Same protocol, new TLVs      |
+| Adjacency changes       | Link-local instead of IP    | No change (uses CLNS)        |
+| Authentication          | Moved to IPsec              | Same (in-protocol)           |
+| Database migration      | Separate LSDB               | Same LSDB, new TLV types     |
+| Dual-stack operation    | Separate instances or AF    | Single instance, both AFs    |
+| Learning curve          | Moderate                    | Minimal if you know IS-IS    |
+```
+
+**IS-IS Dual-Stack Topology Options:**
+```
+Single-Topology (Default, Simpler):
+- IPv4 and IPv6 share same SPF calculation
+- Requires all routers to support both protocols
+- Same path for IPv4 and IPv6 traffic
+- Enable: address-family ipv6 unicast
+
+Multi-Topology (MT-IS-IS, RFC 5120):
+- Separate SPF for IPv4 and IPv6
+- Allows partial deployment (some routers IPv4-only)
+- Can have different paths per address family
+- Enable: address-family ipv6 unicast multi-topology
+```
+
+### IS-IS TLVs for IPv6
+
+```
+TLV   Name                          Purpose
+---   ----                          -------
+22    Extended IS Reachability      Neighbor links (already exists)
+135   Extended IP Reachability      IPv4 prefixes (already exists)
+232   IPv6 Interface Address        Interface IPv6 addresses
+236   IPv6 IP Reachability          IPv6 prefix advertisements
+237   MT-IS-IS                       Multi-topology support
+```
+
+### IS-IS IPv6 Configuration
+
+**Cisco IOS:**
+```
+router isis CORE
+ net 49.0001.0000.0000.0001.00
+ is-type level-2-only
+ metric-style wide
+ !
+ address-family ipv6 unicast
+  multi-topology
+ exit-address-family
+!
+interface GigabitEthernet0/0
+ ipv6 address 2001:db8:1::1/64
+ ipv6 router isis CORE
+ isis ipv6 metric 10
+```
+
+**FRRouting:**
+```
+router isis CORE
+ net 49.0001.0000.0000.0001.00
+ is-type level-2-only
+ topology ipv6-unicast
+!
+interface eth0
+ ipv6 router isis CORE
+```
+
+**Key IS-IS Concepts for IPv6:**
+```
+- NET (Network Entity Title) stays the same for IPv6
+- Adjacencies use CLNS, not IP - work automatically
+- Just enable IPv6 address family and interface routing
+- Wide metrics recommended (already standard practice)
+- Level-1/Level-2 hierarchy unchanged
+```
+
+### IS-IS vs OSPFv3 Comparison
+
+```
+For IPv6-first deployments, consider:
+
+IS-IS advantages:
+- Simpler IPv6 enablement (same protocol)
+- Better multi-vendor interop (simpler spec)
+- No IPsec dependency for authentication
+- Scales better (used by large ISPs)
+- Runs on layer 2, survives IP issues
+
+OSPFv3 advantages:
+- More widely deployed in enterprise
+- More familiar to most network engineers
+- Better tooling/monitoring support
+- Native IPv6 design (cleaner than IS-IS additions)
+- Per-interface configuration clarity
+
+Recommendation:
+- New deployments: Consider IS-IS
+- Existing OSPF shops: OSPFv3 is fine
+- ISP/DC: IS-IS strongly preferred
+```
+
 ## BGP for IPv6
+
+### MP-BGP: How BGP Handles Multiple Address Families
+
+Unlike OSPF (which needed a new version), BGP was extended via MP-BGP (RFC 4760) to handle IPv6. Understanding AFI/SAFI is essential for IPv6 BGP.
+
+**Address Family Identifier (AFI) and SAFI:**
+```
+AFI (Address Family Identifier):
+  1 = IPv4
+  2 = IPv6
+
+SAFI (Subsequent AFI):
+  1 = Unicast
+  2 = Multicast
+  4 = MPLS Labels
+  128 = MPLS VPN
+
+Common combinations:
+  AFI 1, SAFI 1  = IPv4 Unicast (traditional BGP)
+  AFI 2, SAFI 1  = IPv6 Unicast (what you need for IPv6)
+  AFI 1, SAFI 128 = VPNv4 (MPLS L3VPN)
+  AFI 2, SAFI 128 = VPNv6 (MPLS L3VPN for IPv6)
+```
+
+**Session Types for Dual-Stack:**
+```
+Option 1: Single Session, Multiple AFIs (Recommended)
+┌─────────────────────────────────────────────┐
+│  BGP Session over IPv4 or IPv6              │
+│  ├── AFI 1/SAFI 1: IPv4 Unicast prefixes    │
+│  └── AFI 2/SAFI 1: IPv6 Unicast prefixes    │
+└─────────────────────────────────────────────┘
+Pros: Single session to manage, atomic updates
+Cons: Both AFs go down together
+
+Option 2: Separate Sessions per AF
+┌──────────────────────────┐  ┌──────────────────────────┐
+│ BGP Session over IPv4    │  │ BGP Session over IPv6    │
+│ └── IPv4 Unicast only    │  │ └── IPv6 Unicast only    │
+└──────────────────────────┘  └──────────────────────────┘
+Pros: Independent failure domains
+Cons: More sessions, more state, more config
+```
+
+**Next-Hop Handling in IPv6 BGP:**
+```
+eBGP over IPv6:
+- Next-hop is the peer's IPv6 address
+- Often uses link-local + global (two next-hops in UPDATE)
+- Link-local must be reachable for forwarding
+
+iBGP over IPv4 (carrying IPv6 prefixes):
+- Next-hop is IPv6 address (even though session is IPv4)
+- Requires IPv6 reachability to next-hop
+- Common in dual-stack transition
+
+iBGP with IPv4-Mapped Next-Hop:
+- Rarely used, mostly legacy
+- ::ffff:192.0.2.1 style addressing
+- Avoid if possible
+```
+
+**Route Distinguishers (for VPNv6):**
+```
+Same concept as VPNv4:
+RD:IPv6-prefix makes globally unique VPNv6 prefix
+
+Example:
+  RD 65000:1 + 2001:db8::/32 = unique VPNv6 route
+
+Used in MPLS L3VPN to separate customer IPv6 space
+```
 
 ### BGP Configuration Types
 
