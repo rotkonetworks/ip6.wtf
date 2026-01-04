@@ -52,7 +52,7 @@ add dst-address=2001:db8::/32 gateway=2001:db8:2::1 distance=20
 
 ### OSPFv3 vs OSPFv2 Differences
 
-OSPFv3 (RFC 5340) is not just "OSPF for IPv6" - it's a cleaner protocol design. Understanding the differences is key to migration.
+[OSPFv3 (RFC 5340)](https://www.rfc-editor.org/rfc/rfc5340) is not just "OSPF for IPv6" - it's a cleaner protocol design. Understanding the differences is key to migration.
 
 **Fundamental Changes:**
 ```
@@ -65,7 +65,7 @@ OSPFv3 (RFC 5340) is not just "OSPF for IPv6" - it's a cleaner protocol design. 
 | Authentication      | In protocol (MD5/plaintext) | External via IPsec AH         |
 | Address in LSAs     | Embedded in LSA             | Separated (prefix LSAs)       |
 | Multiple instances  | One per interface           | Multiple per interface        |
-| Address families    | IPv4 only                   | IPv4 + IPv6 (RFC 5838)        |
+| Address families    | IPv4 only                   | IPv4 + IPv6 ([RFC 5838](https://www.rfc-editor.org/rfc/rfc5838)) |
 ```
 
 **LSA Type Changes:**
@@ -195,7 +195,7 @@ Single-Topology (Default, Simpler):
 - Same path for IPv4 and IPv6 traffic
 - Enable: address-family ipv6 unicast
 
-Multi-Topology (MT-IS-IS, RFC 5120):
+Multi-Topology (MT-IS-IS, [RFC 5120](https://www.rfc-editor.org/rfc/rfc5120)):
 - Separate SPF for IPv4 and IPv6
 - Allows partial deployment (some routers IPv4-only)
 - Can have different paths per address family
@@ -282,7 +282,7 @@ Recommendation:
 
 ### MP-BGP: How BGP Handles Multiple Address Families
 
-Unlike OSPF (which needed a new version), BGP was extended via MP-BGP (RFC 4760) to handle IPv6. Understanding AFI/SAFI is essential for IPv6 BGP.
+Unlike OSPF (which needed a new version), BGP was extended via [MP-BGP (RFC 4760)](https://www.rfc-editor.org/rfc/rfc4760) to handle IPv6. Understanding AFI/SAFI is essential for IPv6 BGP.
 
 **Address Family Identifier (AFI) and SAFI:**
 ```
@@ -643,3 +643,23 @@ set default-v6 log-adjacency-changes=yes
 - Proper filtering critical for Internet routing
 - Monitor and tune for optimal convergence
 - Plan for growth and redundancy
+
+## Resources
+
+**RFCs:**
+- [RFC 5340](https://www.rfc-editor.org/rfc/rfc5340) - OSPFv3 for IPv6
+- [RFC 5838](https://www.rfc-editor.org/rfc/rfc5838) - OSPFv3 Address Families
+- [RFC 5308](https://www.rfc-editor.org/rfc/rfc5308) - IS-IS for IPv6
+- [RFC 5120](https://www.rfc-editor.org/rfc/rfc5120) - Multi-Topology IS-IS
+- [RFC 4760](https://www.rfc-editor.org/rfc/rfc4760) - MP-BGP Extensions
+- [RFC 2545](https://www.rfc-editor.org/rfc/rfc2545) - BGP-4 for IPv6 Inter-Domain Routing
+- [RFC 5765](https://www.rfc-editor.org/rfc/rfc5765) - Security for BGP
+
+**MikroTik RouterOS 7:**
+- [OSPF Documentation](https://help.mikrotik.com/docs/display/ROS/OSPF)
+- [BGP Documentation](https://help.mikrotik.com/docs/spaces/ROS/pages/328220/BGP)
+- [Routing Filters](https://help.mikrotik.com/docs/spaces/ROS/pages/74678285/Route+Selection+and+Filters)
+
+**Other:**
+- [IANA Protocol Numbers](https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml)
+- [BGP Looking Glass Servers](https://www.bgp4.as/looking-glasses)

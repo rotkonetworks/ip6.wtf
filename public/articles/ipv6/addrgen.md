@@ -36,7 +36,7 @@ Result: 02:50:56:FF:FE:ab:cd:ef
 fe80::0250:56ff:feab:cdef/64
 ```
 
-### Stable Privacy Addresses (RFC 8064)
+### Stable Privacy Addresses ([RFC 7217](https://www.rfc-editor.org/rfc/rfc7217))
 
 **Modern method using hash function:**
 ```
@@ -81,7 +81,7 @@ Interface ID:  c3b:84cd:dc09:6d91
 Result:        2001:db8:abc:0:c3b:84cd:dc09:6d91/64
 ```
 
-### Privacy/Temporary Addresses (RFC 4941)
+### Privacy/Temporary Addresses ([RFC 8981](https://www.rfc-editor.org/rfc/rfc8981))
 
 **Generate random Interface ID:**
 ```
@@ -298,3 +298,20 @@ tcpdump -i eth0 -n 'icmp6 and (ip6[40] == 135 or ip6[40] == 136)'
 - Privacy addresses rotate periodically
 - Modern systems prefer stable-privacy over EUI-64
 - DAD ensures address uniqueness
+
+## Resources
+
+**RFCs:**
+- [RFC 4862](https://www.rfc-editor.org/rfc/rfc4862) - SLAAC (Stateless Address Autoconfiguration)
+- [RFC 7217](https://www.rfc-editor.org/rfc/rfc7217) - Stable Privacy Addresses
+- [RFC 8064](https://www.rfc-editor.org/rfc/rfc8064) - Recommendation on Stable Interface Identifiers
+- [RFC 8981](https://www.rfc-editor.org/rfc/rfc8981) - Temporary Address Extensions (replaces RFC 4941)
+- [RFC 4291](https://www.rfc-editor.org/rfc/rfc4291) - IPv6 Addressing Architecture
+
+**MikroTik RouterOS 7:**
+- [IPv6 Address Configuration](https://help.mikrotik.com/docs/spaces/ROS/pages/328129/IPv6+Address)
+- [IPv6 Neighbor Discovery](https://help.mikrotik.com/docs/spaces/ROS/pages/40992815/IPv6+Neighbor+Discovery)
+
+**Linux:**
+- `sysctl net.ipv6.conf.*.addr_gen_mode` - Address generation mode
+- `sysctl net.ipv6.conf.*.use_tempaddr` - Privacy extensions

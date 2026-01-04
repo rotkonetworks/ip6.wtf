@@ -286,3 +286,20 @@ Each header should appear at most once (except Destination Options)
 - Some extension headers have security implications
 - Fragmentation only by source (no router fragmentation)
 - Minimum MTU is 1280 bytes (vs 68 for IPv4)
+
+## Resources
+
+**RFCs:**
+- [RFC 8200](https://www.rfc-editor.org/rfc/rfc8200) - IPv6 Specification (obsoletes RFC 2460)
+- [RFC 4291](https://www.rfc-editor.org/rfc/rfc4291) - IPv6 Addressing Architecture
+- [RFC 5095](https://www.rfc-editor.org/rfc/rfc5095) - Deprecation of RH0
+- [RFC 7045](https://www.rfc-editor.org/rfc/rfc7045) - Extension Header Transmission/Processing
+- [RFC 8504](https://www.rfc-editor.org/rfc/rfc8504) - IPv6 Node Requirements
+
+**MikroTik RouterOS 7:**
+- [IPv6 Overview](https://help.mikrotik.com/docs/spaces/ROS/pages/328107/IPv6)
+- [IPv6 Firewall](https://help.mikrotik.com/docs/spaces/ROS/pages/110166213/IPv6+Firewall)
+
+**Other:**
+- [IANA IPv6 Special-Purpose Registry](https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml)
+- [IANA Protocol Numbers](https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml)

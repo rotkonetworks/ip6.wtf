@@ -83,7 +83,7 @@ Options:
 - MTU
 - Source Link-Layer Address
 - Route Information
-- DNS Information (RFC 8106)
+- DNS Information ([RFC 8106](https://www.rfc-editor.org/rfc/rfc8106))
 ```
 
 **Type 135: Neighbor Solicitation (NS)**
@@ -115,7 +115,7 @@ Body: Target Address + Destination Address
 **Type 130: Multicast Listener Query**
 ```
 Code: 0
-Versions: MLDv1 (RFC 2710), MLDv2 (RFC 3810)
+Versions: MLDv1 ([RFC 2710](https://www.rfc-editor.org/rfc/rfc2710)), MLDv2 ([RFC 3810](https://www.rfc-editor.org/rfc/rfc3810))
 ```
 
 **Type 131: Multicast Listener Report (MLDv1)**
@@ -212,7 +212,7 @@ icmpv6.nd.flag.router         # RA with Router flag
 ### Why Default-Accept is Safer
 
 1. **Future compatibility**: New ICMPv6 types won't break your network
-2. **RFC 4890 compliance**: Standards recommend allowing ICMPv6 with specific exceptions
+2. **[RFC 4890](https://www.rfc-editor.org/rfc/rfc4890) compliance**: Standards recommend allowing ICMPv6 with specific exceptions
 3. **Operational safety**: Less risk of accidentally breaking critical functions
 4. **Easier debugging**: Error messages remain visible for troubleshooting
 
@@ -363,3 +363,21 @@ tcpdump -i eth0 -n icmp6
 - Neighbor Discovery (Types 133-137) is critical for IPv6
 - Path MTU Discovery relies on Type 2 (Packet Too Big)
 - When in doubt, allow the traffic and monitor for abuse
+
+## Resources
+
+**RFCs:**
+- [RFC 4443](https://www.rfc-editor.org/rfc/rfc4443) - ICMPv6 Specification
+- [RFC 4861](https://www.rfc-editor.org/rfc/rfc4861) - Neighbor Discovery for IPv6
+- [RFC 4890](https://www.rfc-editor.org/rfc/rfc4890) - Recommendations for Filtering ICMPv6
+- [RFC 5095](https://www.rfc-editor.org/rfc/rfc5095) - Deprecation of RH0
+- [RFC 8106](https://www.rfc-editor.org/rfc/rfc8106) - DNS via Router Advertisement
+- [RFC 2710](https://www.rfc-editor.org/rfc/rfc2710) - MLDv1
+- [RFC 3810](https://www.rfc-editor.org/rfc/rfc3810) - MLDv2
+
+**MikroTik RouterOS 7:**
+- [IPv6 Firewall](https://help.mikrotik.com/docs/spaces/ROS/pages/110166213/IPv6+Firewall)
+- [IPv6 Neighbor Discovery](https://help.mikrotik.com/docs/spaces/ROS/pages/40992815/IPv6+Neighbor+Discovery)
+
+**Other:**
+- [IANA ICMPv6 Parameters](https://www.iana.org/assignments/icmpv6-parameters/icmpv6-parameters.xhtml)

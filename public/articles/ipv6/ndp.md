@@ -363,3 +363,21 @@ sysctl -w net.ipv6.conf.eth0.dad_transmits=0
 - Replaces multiple IPv4 protocols
 - Vulnerable without proper filtering
 - Multicast-based efficiency
+
+## Resources
+
+**RFCs:**
+- [RFC 4861](https://www.rfc-editor.org/rfc/rfc4861) - Neighbor Discovery for IPv6
+- [RFC 4862](https://www.rfc-editor.org/rfc/rfc4862) - SLAAC
+- [RFC 3971](https://www.rfc-editor.org/rfc/rfc3971) - SEND (Secure Neighbor Discovery)
+- [RFC 6106](https://www.rfc-editor.org/rfc/rfc6106) - DNS Configuration via RA (obsoleted by RFC 8106)
+- [RFC 8106](https://www.rfc-editor.org/rfc/rfc8106) - DNS Configuration via RA
+
+**MikroTik RouterOS 7:**
+- [IPv6 Neighbor Discovery](https://help.mikrotik.com/docs/spaces/ROS/pages/40992815/IPv6+Neighbor+Discovery)
+- [IPv6 Address Configuration](https://help.mikrotik.com/docs/spaces/ROS/pages/328129/IPv6+Address)
+
+**Tools:**
+- `ndisc6` - Manual neighbor discovery
+- `rdisc6` - Router discovery tool
+- `tcpdump -i eth0 icmp6` - Monitor NDP traffic

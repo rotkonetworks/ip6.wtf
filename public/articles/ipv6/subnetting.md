@@ -371,3 +371,21 @@ add chain=forward src-address=2001:db8:abcd:1::/64 \
 - Plan hierarchically for scalability
 - Nibble-aligned boundaries improve readability
 - Prefix delegation enables dynamic networks
+
+## Resources
+
+**RFCs:**
+- [RFC 6177](https://www.rfc-editor.org/rfc/rfc6177) - IPv6 Address Assignment to End Sites
+- [RFC 3633](https://www.rfc-editor.org/rfc/rfc3633) - DHCPv6 Prefix Delegation
+- [RFC 8415](https://www.rfc-editor.org/rfc/rfc8415) - DHCPv6 (consolidated)
+- [RFC 4291](https://www.rfc-editor.org/rfc/rfc4291) - IPv6 Addressing Architecture
+- [RFC 6164](https://www.rfc-editor.org/rfc/rfc6164) - /127 for Point-to-Point Links
+
+**MikroTik RouterOS 7:**
+- [DHCPv6 Client](https://help.mikrotik.com/docs/spaces/ROS/pages/328155/DHCPv6+Client)
+- [DHCPv6 Server](https://help.mikrotik.com/docs/spaces/ROS/pages/328161/DHCPv6+Server)
+- [IPv6 Pool](https://help.mikrotik.com/docs/spaces/ROS/pages/328135/IPv6+Pool)
+
+**Tools:**
+- [RIPE IPv6 Address Planner](https://www.ripe.net/analyse/ip-address-analysis)
+- [sipcalc](https://github.com/sii/sipcalc) - IPv6 subnet calculator

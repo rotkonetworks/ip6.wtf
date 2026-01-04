@@ -331,7 +331,7 @@ set [find comment~"prevent flap"] distance=200
 - Always use compressed format in configurations
 - Be consistent within documentation
 - Include prefix length explicitly
-- Use lowercase hexadecimal (RFC 5952)
+- Use lowercase hexadecimal ([RFC 5952](https://www.rfc-editor.org/rfc/rfc5952))
 
 ### Summarization
 - Align on nibble boundaries when possible
@@ -352,3 +352,18 @@ set [find comment~"prevent flap"] distance=200
 - Implement dampening carefully
 - Always verify summarization coverage
 - Plan addressing for aggregation
+
+## Resources
+
+**RFCs:**
+- [RFC 5952](https://www.rfc-editor.org/rfc/rfc5952) - Canonical IPv6 Text Representation
+- [RFC 4291](https://www.rfc-editor.org/rfc/rfc4291) - IPv6 Addressing Architecture
+- [RFC 4632](https://www.rfc-editor.org/rfc/rfc4632) - CIDR (applies to IPv6 too)
+
+**MikroTik RouterOS 7:**
+- [BGP Documentation](https://help.mikrotik.com/docs/spaces/ROS/pages/328220/BGP)
+- [Routing Filters](https://help.mikrotik.com/docs/spaces/ROS/pages/74678285/Route+Selection+and+Filters)
+
+**Tools:**
+- [ipv6calc](https://www.deepspace6.net/projects/ipv6calc.html) - IPv6 address manipulation
+- [sipcalc](https://github.com/sii/sipcalc) - Subnet calculator with IPv6 support
