@@ -198,17 +198,17 @@ ip -6 addr show dev eth0
 ### MikroTik Address Configuration
 
 ```mikrotik
-# Configure interface for SLAAC
+# Configure interface for SLAAC (client receiving addresses)
 /ipv6 address
 add interface=ether1 from-pool=dhcp-pool advertise=yes
 
-# Set EUI-64 mode
-/ipv6 settings
-set addr-gen-mode=eui-64
+# Configure ND for advertising prefixes (router side)
+/ipv6 nd
+set [find interface=ether1] managed-address-configuration=no other-configuration=no
 
-# Enable/disable privacy addresses
-/interface ethernet
-set ether1 ipv6-address-generation-mode=stable-privacy
+# Configure prefix for SLAAC
+/ipv6 nd prefix default
+set autonomous=yes
 ```
 
 ## Address Generation Timeline
@@ -245,15 +245,17 @@ T+4s:   All addresses configured
 ### Best Practices
 
 ```mikrotik
-# Configure secure defaults
-/ipv6 settings
-set addr-gen-mode=stable-privacy
-set accept-router-advertisements=yes-if-forwarding-disabled
+# Configure ND for stateless operation (SLAAC only)
+/ipv6 nd
+set [find interface=ether1] managed-address-configuration=no other-configuration=no
 
-# Limit address generation
-/interface ethernet
-set ether1 ipv6-nd-managed-address-config=no
-set ether1 ipv6-nd-other-config=yes
+# Configure prefix with appropriate lifetimes
+/ipv6 nd prefix
+add interface=ether1 prefix=2001:db8::/64 autonomous=yes valid-lifetime=4w preferred-lifetime=1w
+
+# For clients: control RA acceptance (RouterOS 7+)
+/ipv6 settings
+set accept-router-advertisements=yes-if-forwarding-disabled
 ```
 
 ## Troubleshooting Address Generation

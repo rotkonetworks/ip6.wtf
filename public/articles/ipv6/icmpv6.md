@@ -228,8 +228,8 @@ Instead of whitelisting specific types, focus on:
 ```mikrotik
 /ipv6 firewall raw
 
-# Drop deprecated extension headers (ROS v7.4+)
-add action=drop chain=prerouting comment="Drop deprecated headers Type 0, 43" headers=hop,route:contains
+# Drop Routing Header Type 0 (deprecated per RFC 5095)
+add action=drop chain=prerouting comment="Drop RH0 - deprecated routing header" ipv6-header=route
 
 # Anti-spoofing: ND messages MUST have hop limit 255
 add chain=prerouting protocol=icmpv6 icmp-options=133:0-137:0 hop-limit=not-equal:255 action=drop comment="Drop spoofed ND"
