@@ -240,8 +240,8 @@ export const analyzeIPv6 = (ip, cache) => {
     
     if (firstHextet >= 0xfd00) {
       details.push('Locally assigned (fd00::/8)', '40-bit random Global ID provides uniqueness');
-      const globalId = hextets[0].substring(2) + hextets[1] + hextets[2].substring(0, 2);
-      details.push(`Global ID: ${globalId}`, `Subnet ID: ${hextets[2].substring(2)}${hextets[3]}`);
+      const globalId = hextets[0].substring(2) + hextets[1] + hextets[2];
+      details.push(`Global ID: ${globalId}`, `Subnet ID: ${hextets[3]}`);
     } else {
       details.push('Reserved for future definition (fc00::/8)');
     }
