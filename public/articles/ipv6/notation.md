@@ -131,42 +131,41 @@ Thresholds:
 - Max suppress time: 60 minutes
 ```
 
-### MikroTik BGP Dampening Configuration
+### Preventing Route Flapping (RouterOS 7)
+
+RouterOS 7 does not have native BGP route dampening. Use these alternative approaches:
 
 ```mikrotik
-# Create dampening profile
+# Method 1: Blackhole route prevents advertisement withdrawal
+# When the real route disappears, blackhole keeps prefix advertised
+/ipv6 route
+add dst-address=2001:db8::/32 type=blackhole distance=254 \
+    comment="prevent flap - only active when real route gone"
+
+# Method 2: Filter based on prefix length (reject unstable specifics)
 /routing filter rule
 add chain=bgp-in-v6 \
-    rule="if (dst-len > 48) { 
-        set bgp-weight=0;
-        set damping='yes';
-        accept; 
-    }"
+    rule="if (dst-len > 48) { reject; }"
 
-# Configure dampening parameters
-/routing bgp dampening
-set enabled=yes \
-    suppress-threshold=2000 \
-    reuse-threshold=750 \
-    half-life=15m \
-    max-suppress-time=60m
-
-# View dampened routes
-/routing bgp dampening-path print
+# Method 3: Use hold-time and keepalive tuning to reduce flaps
+/routing bgp connection
+set peer1 hold-time=3m keepalive-time=1m
 ```
 
-### Route Flap Detection
+### Route Monitoring (RouterOS 7)
 ```mikrotik
-# Monitor flapping routes
-/routing bgp advertisements print where withdrawn-count > 5
+# Monitor BGP session state
+/routing bgp session print
 
-# Log excessive updates
-/routing filter rule
-add chain=bgp-in-v6 \
-    rule="if (bgp-path-peer-update-count > 100) { 
-        log warning 'Excessive updates from peer'; 
-        # & alert pipeline
-    }"
+# Check received prefixes
+/routing bgp advertisements print
+
+# Log routing changes
+/system logging
+add topics=bgp,!raw action=memory
+
+# Watch for route changes in real-time
+/routing route print follow where bgp
 ```
 
 ## Advanced Summarization Techniques
@@ -314,16 +313,16 @@ add chain=bgp-out \
     }"
 ```
 
-### Dampening Too Aggressive
+### Route Flap Prevention Issues
 ```
-Problem: Legitimate route changes suppressed
-Result: Extended outages
+Problem: Blackhole route too persistent, hiding real outages
+Result: Traffic blackholed instead of rerouted
 
-Solution: Tune parameters
-/routing bgp dampening
-set suppress-threshold=3000 \
-    reuse-threshold=1000 \
-    half-life=20m
+Solution (RouterOS 7): Use appropriate blackhole distance
+/ipv6 route
+set [find comment~"prevent flap"] distance=200
+# Lower distance = prefers blackhole longer
+# Higher distance = faster failover to alternates
 ```
 
 ## Best Practices Summary

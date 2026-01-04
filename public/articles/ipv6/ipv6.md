@@ -247,21 +247,21 @@ sysctl -w net.ipv6.conf.all.forwarding=1
 
 ## Security Considerations
 
-### MikroTik IPv6 Header Filtering:
+### MikroTik IPv6 Header Filtering (RouterOS 7):
 ```mikrotik
-# Filter invalid IPv6 headers
 /ipv6 firewall raw
-# Drop packets with routing header type 0
-add chain=prerouting protocol=6 ipv6-header=routing-type0 action=drop comment="Deprecated RH0"
 
-# Drop fragments to critical services
-add chain=prerouting protocol=6 ipv6-header=fragment dst-port=22,179,443 action=drop
+# Drop packets with routing header (RH0 deprecated, others rare)
+add chain=prerouting ipv6-header=route action=drop comment="Drop routing headers"
 
-# Protect against tiny fragments
-add chain=prerouting protocol=6 ipv6-header=fragment fragment-offset=0-7 action=drop
+# Drop fragments to critical services (TCP only needs protocol match)
+add chain=prerouting protocol=tcp ipv6-header=frag dst-port=22,179,443 action=drop
 
-# Drop packets with too many extension headers
-add chain=prerouting hop-limit=less-than:2 action=drop comment="Too many hops consumed"
+# Drop tiny fragments (potential attack vector)
+add chain=prerouting ipv6-header=frag fragment-offset=1-7 action=drop comment="Tiny fragments"
+
+# Drop packets about to expire (potential loop)
+add chain=prerouting hop-limit=less-than:2 action=drop comment="Near-expired packets"
 ```
 
 ### Extension Header Order:

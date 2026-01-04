@@ -110,66 +110,61 @@ Why this is better:
 - Matches modern network design
 ```
 
-### MikroTik OSPFv3 Setup
+### MikroTik OSPFv3 Setup (RouterOS 7)
 
 ```mikrotik
-# Create OSPFv3 instance
-/routing ospf-v3 instance
-add name=default router-id=1.1.1.1
+# Create OSPFv3 instance (ROS7 uses unified /routing/ospf)
+/routing ospf instance
+add name=default-v6 version=3 router-id=1.1.1.1
 
 # Configure areas
-/routing ospf-v3 area
-add name=backbone area-id=0.0.0.0 instance=default
-add name=area1 area-id=0.0.0.1 instance=default type=nssa
+/routing ospf area
+add name=backbone-v6 area-id=0.0.0.0 instance=default-v6
+add name=area1-v6 area-id=0.0.0.1 instance=default-v6 type=nssa
 
-# Configure interfaces
-/routing ospf-v3 interface
-add area=backbone interface=ether1 network-type=broadcast
-add area=area1 interface=ether2 network-type=point-to-point
+# Configure interface templates (ROS7 uses templates, not direct interface config)
+/routing ospf interface-template
+add area=backbone-v6 interfaces=ether1 type=broadcast
+add area=area1-v6 interfaces=ether2 type=ptmp
 
-# Advertise networks
+# Addresses are advertised automatically when interface matches template
 /ipv6 address
-add address=2001:db8:1::1/64 interface=ether1 advertise=yes
-add address=2001:db8:2::1/64 interface=ether2 advertise=yes
-
-# Redistribution
-/routing ospf-v3 instance
-set default redistribute-connected=as-type-1 \
-    redistribute-static=as-type-2
+add address=2001:db8:1::1/64 interface=ether1
+add address=2001:db8:2::1/64 interface=ether2
 ```
 
 ### OSPFv3 Network Types
 ```mikrotik
 # Point-to-point (no DR/BDR)
-/routing ospf-v3 interface
-add area=backbone interface=ether1 network-type=point-to-point
+/routing ospf interface-template
+add area=backbone-v6 interfaces=ether1 type=ptp
 
 # Broadcast (elects DR/BDR)
-add area=backbone interface=ether2 network-type=broadcast \
-    priority=100 cost=10
-
-# NBMA (manual neighbors)
-add area=backbone interface=ether3 network-type=nbma
-
-/routing ospf-v3 neighbor
-add address=fe80::2%ether3 poll-interval=30s
+add area=backbone-v6 interfaces=ether2 type=broadcast priority=100 cost=10
 
 # Point-to-multipoint
-add area=backbone interface=ether4 network-type=point-to-multipoint
+add area=backbone-v6 interfaces=ether3 type=ptmp
+
+# Static neighbor for NBMA-like scenarios
+/routing ospf static-neighbor
+add address=fe80::2%ether3 instance=default-v6
 ```
 
 ### OSPFv3 Troubleshooting
 ```mikrotik
 # Show neighbors
-/routing ospf-v3 neighbor print
+/routing ospf neighbor print
 
 # Show database
-/routing ospf-v3 lsa print detail
+/routing ospf lsa print detail where instance=default-v6
+
+# Show interface status
+/routing ospf interface print
 
 # Monitor state changes
 /log print where topics~"ospf"
 
-# Debug OSPFv3
+# Enable debug logging
 /system logging
 add topics=ospf,!raw action=memory
 ```
@@ -526,8 +521,8 @@ add chain=static-to-ospf \
         accept; 
     }"
 
-/routing ospf-v3 instance
-set default redistribute-static=yes out-filter=static-to-ospf
+/routing ospf instance
+set default-v6 redistribute=static out-filter-chain=static-to-ospf
 ```
 
 ## Advanced Routing Features
@@ -574,7 +569,7 @@ add chain=bgp-out \
 /routing bfd configuration
 add disabled=no interfaces=all min-rx=100ms min-tx=100ms
 
-/routing ospf-v3 interface
+/routing ospf interface-template
 set [find] use-bfd=yes
 
 # Enable BFD for BGP
@@ -614,8 +609,8 @@ add topics=route,bgp,ospf action=memory
 set upstream-v6 output.log=yes input.log=yes
 
 # OSPF-specific debugging
-/routing ospf-v3 instance
-set default log-adjacency-changes=yes
+/routing ospf instance
+set default-v6 log-adjacency-changes=yes
 ```
 
 ## Best Practices
