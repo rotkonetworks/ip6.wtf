@@ -79,10 +79,10 @@ export const analyzeIPv4 = (ip, cache) => {
     } else if (octets[0] === 224 && octets[1] === 0 && octets[2] === 1) {
       details.push('Internetwork Control Block (224.0.1.0/24)');
       rfcs.push({ number: 5771, text: 'IANA IPv4 Multicast Address Space Registry' });
-    } else if (octets[0] === 233 && octets[1] >= 252 && octets[1] <= 255) {
+    } else if (octets[0] === 232) {
       details.push('Source-Specific Multicast (232.0.0.0/8)');
       rfcs.push({ number: 4607, text: 'Source-Specific Multicast for IP' });
-    } else if (octets[0] === 234) {
+    } else if (octets[0] === 233) {
       details.push('GLOP Block (233.0.0.0/8)');
       rfcs.push({ number: 3180, text: 'GLOP Addressing in 233/8' });
     } else if (octets[0] === 239) {
